@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Event.associate = (db) => {
         // place to add associations
+        Event.belongsToMany(db.User, {through: "user_events"})
     }
 
     return Event

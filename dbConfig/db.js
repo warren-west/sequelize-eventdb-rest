@@ -153,6 +153,23 @@ async function populateDb() {
                 isOnline: false
             }
         ])
+
+        await db.User.bulkCreate([
+            {
+                username: "admin",
+                dob: "2025-01-01",
+                email: "admin@localhost.com",
+                role: "admin"
+            },
+            {
+                username: "guest",
+                dob: "2025-01-01",
+                email: "guest@localhost.com",
+                role: "user"
+            },
+        ])
+
+        
     } catch (error) {
         console.log(error.message)
     }
