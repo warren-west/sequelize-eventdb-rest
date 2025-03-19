@@ -3,6 +3,7 @@ const { ValidationError } = require('sequelize')
 const db = require('../models')
 const EventService = require('../services/EventService')
 const eventService = new EventService(db)
+const { validToken, isAdmin } = require('../middleware/jwtMiddleware')
 
 /** {baseUrl}/api/v1/events
  * Get all events
@@ -50,12 +51,12 @@ router.get('/:id', async (req, res) => {
     try {
         // throw Error("test error")
         if (!parseInt(req.params.id))
-            return res.status(400).jsend.fail({})
+            return res.status(400).jsend.fail({ message: "ID is required" })
             // return res.status(400).json({ message: "Bad request" })
 
         const result = await eventService.getById(req.params.id)
         if (!result)
-            return res.status(404).jsend.fail({ message: "Not found"})
+            return res.status(404).jsend.fail({ message: "Event not found" })
             // return res.status(404).json({ message: "Not found" })
 
         res.status(200).json(result)
@@ -108,7 +109,7 @@ router.post('/', async (req, res) => {
 /**
  * Update an Event record in the DB.
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', validToken, async (req, res) => {
     // #swagger.tags = ['Events']
     // #swagger.description = 'Update a record in the DB, by Id.'
     // #swagger.summary = 'Update a record in the DB, by Id.'
@@ -148,7 +149,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAdmin, async (req, res) => {
     // #swagger.tags = ['Events']
     // #swagger.description = 'Delete a record from the DB, by Id.'
     // #swagger.summary = 'Delete a record from the DB, by Id.'

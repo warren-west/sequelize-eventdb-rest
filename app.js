@@ -15,6 +15,7 @@ app.use(jsend.middleware)
 const indexRouter = require('./routes/index')
 const eventsRouter = require('./routes/events')
 const usersRouter = require('./routes/users')
+const authRouter = require('./routes/auth')
 
 app.use(bodyParser.json())
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
@@ -22,6 +23,7 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use(apiPrefix + '/', indexRouter)
 app.use(apiPrefix + '/events', eventsRouter)
 app.use(apiPrefix + '/users', usersRouter)
+app.use(apiPrefix + '/login', authRouter) // or /auth ?
 
 const initDb = require('./dbConfig/db')
 initDb()

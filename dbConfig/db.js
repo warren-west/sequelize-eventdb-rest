@@ -159,12 +159,14 @@ async function populateDb() {
                 username: "admin",
                 dob: "2025-01-01",
                 email: "admin@localhost.com",
+                password: "admin",
                 role: "admin"
             },
             {
                 username: "guest",
                 dob: "2025-01-01",
                 email: "guest@localhost.com",
+                password: "1234",
                 role: "user"
             },
         ])

@@ -6,6 +6,11 @@ class UserService {
 
     // CRUD
 
+    // get all users
+    async getAllUsers() {
+        return this.User.findAll()
+    }
+
     // assuming emails are unique
     async getByEmail(email) {
         return this.User.findOne({ where: { email } })
@@ -22,6 +27,7 @@ class UserService {
             username: payload.username,
             email: payload.email,
             dob: payload.dob,
+            password: payload.password,
         })
     }
 }
