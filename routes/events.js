@@ -117,6 +117,7 @@ router.put('/:id', validToken, async (req, res) => {
     // #swagger.consumes = ['application/json']
     // #swagger.responses[204] = { description: 'Event has been updated successfully' }
     // #swagger.responses[400] = { description: 'Invalid input provided' }
+    // #swagger.responses[401] = { description: 'You need to be logged in to update an event' }
     // #swagger.responses[404] = { description: 'Event not found' }
     // #swagger.responses[500] = { description: 'Internal server error' }
     // #swagger.parameters['id'] = { description: 'Id of the Event to be updated' }
@@ -134,7 +135,7 @@ router.put('/:id', validToken, async (req, res) => {
             return res.status(404).json({ message: "Not found" })
 
         const response = await eventService.update(req.body, req.params.id)
-        res.status(204).json(response)
+        res.status(204).jsend.success({ message: "Event updated successfully" })
     } catch (error) {
         if (error instanceof ValidationError) {
             let errorMessages = []
@@ -156,6 +157,7 @@ router.delete('/:id', isAdmin, async (req, res) => {
     // #swagger.parameters['id'] = { description: 'The Id of the Event to be deleted' }
     // #swagger.responses[204] = { description: 'Event has been deleted successfully' }
     // #swagger.responses[400] = { description: 'Invalid Id provided' }
+    // #swagger.responses[401] = { description: 'You need to be an admin to delete an event' }
     // #swagger.responses[404] = { description: 'Event not found' }
     // #swagger.responses[500] = { description: 'Internal server error' }
     // #swagger.produces = ['application/json']

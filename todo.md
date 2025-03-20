@@ -4,6 +4,7 @@
     [X] Regular user
     [X] Admin
 [X] Add User service
+    [X] Get all users
     [X] Get by email / username
     [X] Add new User
 [X] Move jsend middleware to app.js
@@ -21,10 +22,15 @@
 [X] login with either username or password
 
 Also next up - Swagger Documentation 401s:
-[] Deleting an event could throw a 401 - invalid token OR user not admin
-[] Updating an event could throw a 401 - invalid token
+[X] Deleting an event could throw a 401 - invalid token OR user not admin
+[X] Updating an event could throw a 401 - invalid token
 
 Next up - Testing:
+**Setup**
+[x] Create a tests folder "__tests__"
+    [X] Create a file for event tests 
+    [X] Create a file for user tests 
+    [X] Create a file for auth tests 
 **Event Tests**
 [] Get all events is successful (happy day - 200)
 [] Get event by ID is successful (happy day - 200)
@@ -59,3 +65,5 @@ Next up - Testing:
 [] Get event by ID is unsuccessful (400)
 [] Add new event is successful (happy day - 201)
 [] Add new event is unsuccessful (400 - could be duplicated for every property that could be missing)
+
+[] Check that the JWT on the response does not contain a user password

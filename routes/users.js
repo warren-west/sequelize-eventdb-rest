@@ -67,6 +67,7 @@ router.post('/', async (req, res) => {
         return res.status(201).jsend.success(result)
 
     } catch (err) {
+        console.log(err.message)
         // internal server error
         // not ideal to send back the exact error message
         // it could expose secrets about the inner workings of our system
@@ -74,5 +75,6 @@ router.post('/', async (req, res) => {
         return res.status(500).jsend.error(err.message)
     }
 })
+
 
 module.exports = router

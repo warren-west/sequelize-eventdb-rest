@@ -7,6 +7,7 @@ const userService = new UserService(db)
 
 // POST /login
 router.post('/', async (req, res) => {
+    console.log("LOGIN HIT")
     // get the username & password from the req.body
     // we set default values for these properties being destructured off req.body
     // because if they're missing, the next line will throw an error 
@@ -27,22 +28,27 @@ router.post('/', async (req, res) => {
             ? await userService.getByUsername(username)
             : await userService.getByEmail(email)
 
+        const parsedResult = JSON.parse(JSON.stringify(result)) // || null
+
         // check for a 401 if the user is not found or
         // password doesn't match username
-        if (!result || JSON.parse(JSON.stringify(result)).password !== password) {
+        if (!result || parsedResult.password !== password) {
             return res.status(401).jsend.fail({ message: "Please enter the correct credentials" })
         }
 
+        // remove the password from the user object, "result"
+        // after we've checked that result is not null
+        // we don't want to see any passwords on a JWT
+        delete parsedResult.password
+
         // sign a new token - payload stores user data
-        const token = jwt.sign(JSON.parse(JSON.stringify(result)), process.env.JWT_SECRET, { expiresIn: "60s" })
+        const token = jwt.sign(parsedResult, process.env.JWT_SECRET, { expiresIn: "1h" })
 
         // if everything is ok - for now, attach token to res body
         return res.status(200).jsend.success(token)
 
     } catch (err) {
-        // check for a token error
-        // jwt.JsonWebTokenError
-        // we're missing a 401 error here if the token can't sign
+        // server error
         return res.status(500).jsend.error(err.message)
     }
 })
@@ -70,7 +76,11 @@ router.post('/signup', async (req, res) => {
         // in dev mode - return the token with the JSON response
         // but DO NOT do this in production
 
-        const token = jwt.sign(JSON.parse(JSON.stringify(result)), process.env.JWT_SECRET, { expiresIn: "1h" })
+        // exclude the password from the JWT payload
+        const parsedResult = JSON.parse(JSON.stringify(result))
+        delete parsedResult.password
+
+        const token = jwt.sign(parsedResult, process.env.JWT_SECRET, { expiresIn: "1h" })
 
         return res.status(201).jsend.success(token)
 

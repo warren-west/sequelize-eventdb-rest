@@ -3,10 +3,8 @@ const jwt = require('jsonwebtoken')
 
 // helper functions
 function getTokenFromReq(req, res) {
-    try {
-        // check if the token on the req header isn't null
-        if (!req.headers.authorization) throw jwt.JsonWebTokenError
-    } catch (err) {
+    // check if the token on the req header isn't null
+    if (!req.headers.authorization) {
         return res.status(401).jsend.fail({ message: "Invalid token" })
     }
 
@@ -41,7 +39,9 @@ function isAdmin(req, res, next) {
         // else throw a 401 error
 
         jwt.verify(token, process.env.JWT_SECRET)
-        const parsedToken = jwt.decode(token)
+        let parsedToken = jwt.decode(token)
+        // NOTE: The password is on the token at face value.
+        // This is super bad practice
 
         // make sure we understand the token's structure that we're using
         console.log(parsedToken)
@@ -61,6 +61,7 @@ function isAdmin(req, res, next) {
     }
 }
 
+// revealing module pattern
 const jwtMiddleware = {
     validToken,
     isAdmin,
