@@ -8,7 +8,9 @@ const sequelize = new Sequelize({
     password: process.env.DB_PASS,
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
-    dialect: process.env.DB_DIALECT
+    dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT,
+    logging: false
 })
 
 const db = { sequelize }
